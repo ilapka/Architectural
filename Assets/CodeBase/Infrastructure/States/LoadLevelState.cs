@@ -1,5 +1,6 @@
 ﻿using CameraLogic;
 using Infrastructure.Factory;
+using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
 
 namespace Infrastructure.States
@@ -12,13 +13,15 @@ namespace Infrastructure.States
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _curtain;
         private readonly IGameFactory _gameFactory;
+        private readonly IPersistentProgressService _progressService;
 
-        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain curtain, IGameFactory gameFactory)
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain curtain, IGameFactory gameFactory, IPersistentProgressService progressService)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _curtain = curtain;
             _gameFactory = gameFactory;
+            _progressService = progressService;
         }
 
         public void Enter(string sceneName)
@@ -35,12 +38,24 @@ namespace Infrastructure.States
         
         private void OnLoaded()
         {
-            GameObject hero = _gameFactory.CreateHero(at: GameObject.FindWithTag(InitialPointTag));
-            _gameFactory.CreateHud();
-            
-            SetCameraFollow(hero);
-            
+            InitGameWorld();
+            InformProgressReaders();
             _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        private void InitGameWorld()
+        {
+            GameObject hero = _gameFactory.CreateHero(at: GameObject.FindWithTag(InitialPointTag));
+            
+            _gameFactory.CreateHud();
+
+            SetCameraFollow(hero);
+        }
+
+        private void InformProgressReaders()
+        {
+            foreach (ISavedProgressReader progressReader in _gameFactory.ProgressReaders)
+                progressReader.LoadProgress(_progressService.Progress);
         }
 
         private void SetCameraFollow(GameObject gameObject)
