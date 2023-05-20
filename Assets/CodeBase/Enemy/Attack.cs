@@ -1,7 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services;
+using Logic;
 using UnityEngine;
 
 namespace Enemy
@@ -17,9 +18,11 @@ namespace Enemy
         private float _cleavage = 0.5f;
         [SerializeField]
         private float _effectiveDistance = 0.5f;
+        [SerializeField]
+        private float _damage;
 
         private IGameFactory _factory;
-        
+
         private Transform _heroTransform;
         private int _layerMask;
         private float _attackCooldownTimer;
@@ -55,6 +58,7 @@ namespace Enemy
             if (Hit(out Collider hit))
             {
                 PhysicsDebug.DrawDebug(StartPoint(), _cleavage, 1f);
+                hit.transform.GetComponent<IHealth>().TakeDamage(_damage);
             }
         }
 
@@ -69,7 +73,7 @@ namespace Enemy
             
             return hitsCount > 0;
         }
-
+ 
         private Vector3 StartPoint() =>
             new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) + transform.forward * _effectiveDistance;
 

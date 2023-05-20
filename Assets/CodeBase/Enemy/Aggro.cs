@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Logic;
 using UnityEngine;
 
 namespace Enemy

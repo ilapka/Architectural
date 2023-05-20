@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Logic;
+using UnityEngine;
 
 namespace Enemy
 {
