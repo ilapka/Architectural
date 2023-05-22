@@ -54,10 +54,10 @@ namespace Infrastructure.Factory
         private void RegisterProgressWatchers(GameObject gameObject)
         {
             foreach (ISavedProgressReader progressReader in gameObject.GetComponents<ISavedProgressReader>())
-                Registered(progressReader);
+                Register(progressReader);
         }
 
-        private void Registered(ISavedProgressReader progressReader)
+        public void Register(ISavedProgressReader progressReader)
         {
             if (progressReader is ISavedProgress progressWriter)
             {

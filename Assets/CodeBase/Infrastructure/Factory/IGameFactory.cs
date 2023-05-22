@@ -15,5 +15,6 @@ namespace Infrastructure.Factory
         GameObject CreateHero(GameObject at);
         GameObject CreateHud();
         void Cleanup();
+        void Register(ISavedProgressReader progressReader);
     }
 }

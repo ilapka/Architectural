@@ -1,8 +1,8 @@
-﻿using System;
-using CameraLogic;
+﻿using CameraLogic;
 using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
+using Logic;
 using UI;
 using UnityEngine;
 
@@ -11,7 +11,8 @@ namespace Infrastructure.States
     public class LoadLevelState : IPayloadedState<string>
     {
         private const string InitialPointTag = "InitialPoint";
-
+        private const string EnemySpawnerTag = "EnemySpawner";
+        
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _curtain;
@@ -48,9 +49,21 @@ namespace Infrastructure.States
 
         private void InitGameWorld()
         {
+            InitSpawners();
             GameObject hero = _gameFactory.CreateHero(at: GameObject.FindWithTag(InitialPointTag));
             InitHud(hero);
             SetCameraFollow(hero);
+        }
+
+        private void InitSpawners()
+        {
+            GameObject[] spawners= GameObject.FindGameObjectsWithTag(EnemySpawnerTag);
+
+            foreach (GameObject spawnerObject in spawners)
+            {
+                EnemySpawner spawner = spawnerObject.GetComponent<EnemySpawner>();
+                _gameFactory.Register(spawner);
+            }
         }
 
         private void InitHud(GameObject hero)
