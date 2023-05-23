@@ -18,4 +18,6 @@ MonoBehaviour:
   EffectiveDistance: 0.5
   AttackCleavage: 0.5
   MoveSpeed: 4
+  MinLoot: 1
+  MaxLoot: 7
   Prefab: {fileID: 738958169696351499, guid: a2666ed3de320ca41aef1982146176f1, type: 3}

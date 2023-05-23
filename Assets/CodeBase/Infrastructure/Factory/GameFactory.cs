@@ -67,8 +67,10 @@ namespace Infrastructure.Factory
             
             monster.GetComponent<AgentRotateToHero>()?.Construct(HeroGameObject.transform);
 
+            WorldData worldData = _progressService.Progress.WorldData;
+            
             LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
-            lootSpawner.Construct(this, _randomService);
+            lootSpawner.Construct(this, _randomService, worldData);
             lootSpawner.SetLoot(monsterData.MinLoot, monsterData.MaxLoot);
             
             return monster;

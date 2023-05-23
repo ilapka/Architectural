@@ -1,4 +1,5 @@
 ﻿using CameraLogic;
+using Enemy;
 using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
@@ -52,7 +53,17 @@ namespace Infrastructure.States
             InitSpawners();
             GameObject hero = _gameFactory.CreateHero(at: GameObject.FindWithTag(InitialPointTag));
             InitHud(hero);
+            InitLoot();
             SetCameraFollow(hero);
+        }
+
+        private void InitLoot()
+        {
+            foreach (var loot in _progressService.Progress.WorldData.LootData.Loots)
+            {
+                LootPiece piece = _gameFactory.CreateLoot();
+                piece.Initialize(loot);
+            }
         }
 
         private void InitSpawners()

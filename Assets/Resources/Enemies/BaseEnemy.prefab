@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 4828288185947571485}
   - component: {fileID: 4191074385188649827}
   - component: {fileID: 3318899711123082771}
+  - component: {fileID: 6920005531119472030}
   m_Layer: 0
   m_Name: BaseEnemy
   m_TagString: Untagged
@@ -221,6 +222,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpBar: {fileID: 6875392525209268484}
+--- !u!114 &6920005531119472030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500939411536426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac20950bd7db43c29567fcff2d5e8351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: BaseEnemy_9caf5376-8a41-4e45-a24b-d3a3c4995cdc
 --- !u!1 &419847219815565834
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb63e06217d41f9bbb07de53be16ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uniqueId: {fileID: 6920005531119472030}
   EnemyDeath: {fileID: 4191074385188649827}
 --- !u!1 &786433300168853980
 GameObject:

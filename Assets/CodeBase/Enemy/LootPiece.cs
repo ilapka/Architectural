@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using Data;
+using Infrastructure.Services.PersistentProgress;
 using TMPro;
 using UnityEngine;
 
 namespace Enemy
 {
-    public class LootPiece : MonoBehaviour
+    public class LootPiece : MonoBehaviour, ISavedProgress
     {
         [SerializeField]
         private GameObject _skull;
@@ -25,10 +26,11 @@ namespace Enemy
         {
             _worldData = worldData;
         }
-        
+
         public void Initialize(Loot loot)
         {
             _loot = loot;
+            transform.position = loot.Position.AsUnityVector();
         }
 
         private void OnTriggerEnter(Collider other) =>
@@ -73,6 +75,22 @@ namespace Enemy
         {               
             yield return new WaitForSeconds(1.5f);
             Destroy(gameObject);
+        }
+
+        public void LoadProgress(PlayerProgress progress)
+        {
+            Loot loot = progress.WorldData.LootData.GetLoot(id: _loot.Id);
+
+            if(loot != null)
+                Initialize(loot);
+        }
+
+        public void UpdateProgress(PlayerProgress progress)
+        {
+            Loot loot = progress.WorldData.LootData.GetLoot(id: _loot.Id);
+            
+            if(loot != null)
+                loot.Position = transform.position.AsVectorData();
         }
     }
 }
