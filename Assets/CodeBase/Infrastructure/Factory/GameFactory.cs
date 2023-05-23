@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Data;
 using Enemy;
 using Infrastructure.AssetManagement;
+using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
 using StaticData;
@@ -15,14 +17,18 @@ namespace Infrastructure.Factory
     {
         private readonly IAssetProvider _assets;
         private readonly IStaticDataService _staticData;
+        private readonly IRandomService _randomService;
+        private readonly IPersistentProgressService _progressService;
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
         private GameObject HeroGameObject { get; set; }
 
-        public GameFactory(IAssetProvider assets, IStaticDataService staticData)
+        public GameFactory(IAssetProvider assets, IStaticDataService staticData, IRandomService randomService, IPersistentProgressService progressService)
         {
             _assets = assets;
             _staticData = staticData;
+            _randomService = randomService;
+            _progressService = progressService;
         }
 
         public GameObject CreateHero(GameObject at)
@@ -31,8 +37,14 @@ namespace Infrastructure.Factory
             return HeroGameObject;
         }
 
-        public GameObject CreateHud() =>
-            InstantiateRegistered(AssetPath.HudPath);
+        public GameObject CreateHud()
+        {
+            GameObject hud = InstantiateRegistered(AssetPath.HudPath);
+            
+            hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
+            
+            return hud;
+        }
 
         public GameObject CreateMonster(MonsterTypeId typeId, Transform parent)
         {
@@ -54,8 +66,21 @@ namespace Infrastructure.Factory
             attack.EffectiveDistance = monsterData.EffectiveDistance;
             
             monster.GetComponent<AgentRotateToHero>()?.Construct(HeroGameObject.transform);
+
+            LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
+            lootSpawner.Construct(this, _randomService);
+            lootSpawner.SetLoot(monsterData.MinLoot, monsterData.MaxLoot);
             
             return monster;
+        }
+
+        public LootPiece CreateLoot()
+        {
+            LootPiece lootPiece = InstantiateRegistered(AssetPath.Loot).GetComponent<LootPiece>();
+            
+            lootPiece.Construct(_progressService.Progress.WorldData);
+            
+            return lootPiece;
         }
 
         public void Cleanup()

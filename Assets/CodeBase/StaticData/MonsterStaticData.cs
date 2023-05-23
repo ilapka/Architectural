@@ -15,6 +15,9 @@ namespace StaticData
         [Range(0.5f, 1f)]
         public float AttackCleavage = 0.5f;
         public float MoveSpeed;
+
+        public int MinLoot;
+        public int MaxLoot;
         
         public GameObject Prefab;
     }
