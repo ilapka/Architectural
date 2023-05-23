@@ -14,8 +14,8 @@ namespace Infrastructure.Factory
         GameObject CreateHero(GameObject at);
         GameObject CreateHud();
         GameObject CreateMonster(MonsterTypeId typeId, Transform parent);
-        void Cleanup();
-        void Register(ISavedProgressReader progressReader);
+        void CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId);
         LootPiece CreateLoot();
+        void Cleanup();
     }
 }
