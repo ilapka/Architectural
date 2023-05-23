@@ -59,10 +59,10 @@ namespace Enemy
         }
 
         private void SwitchFollowOn() =>
-            _follow.enabled = true;
+            _follow.SetEnable(true);
 
         private void SwitchFollowOff() =>
-            _follow.enabled = false;
+            _follow.SetEnable(false);
 
         private void OnDestroy()
         {

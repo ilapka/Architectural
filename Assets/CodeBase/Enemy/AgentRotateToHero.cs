@@ -1,6 +1,4 @@
-﻿using Infrastructure.Factory;
-using Infrastructure.Services;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -9,24 +7,14 @@ namespace Enemy
         [SerializeField]
         private float _speed = 1f;
 
-        private IGameFactory _gameFactory;
         private Transform _heroTransform;
         private Vector3 _positionToLook;
         
-        private void Start()
+        public void Construct(Transform heroTransform)
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-
-            if (IsHeroExists())
-            {
-                InitializeHeroTransform();
-            }
-            else
-            {
-                _gameFactory.HeroCreated += HeroCreated;
-            }
+            _heroTransform = heroTransform;
         }
-
+        
         private void Update()
         {
             if(IsInitialized())
@@ -55,28 +43,7 @@ namespace Enemy
         
         private float SpeedFactor() =>
             _speed * Time.deltaTime;
-
-        private void HeroCreated()
-        {
-            InitializeHeroTransform();
-        }
-
-        private void InitializeHeroTransform()
-        {
-            _heroTransform = _gameFactory.HeroGameObject.transform;
-        }
-
-        private bool IsInitialized() => _heroTransform != null;
         
-        private bool IsHeroExists()
-        {
-            return _gameFactory.HeroGameObject != null;
-        }
-
-        private void OnDestroy()
-        {
-            if (_gameFactory != null)
-                _gameFactory.HeroCreated -= HeroCreated;
-        }
+        private bool IsInitialized() => _heroTransform != null;
     }
 }

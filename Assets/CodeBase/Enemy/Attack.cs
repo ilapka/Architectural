@@ -1,7 +1,4 @@
 ﻿using System.Linq;
-using Hero;
-using Infrastructure.Factory;
-using Infrastructure.Services;
 using Logic;
 using UnityEngine;
 
@@ -14,15 +11,11 @@ namespace Enemy
         private EnemyAnimator _animator;
         [SerializeField]
         private float _attackCooldown = 3f;
-        [SerializeField]
-        private float _cleavage = 0.5f;
-        [SerializeField]
-        private float _effectiveDistance = 0.5f;
-        [SerializeField]
-        private float _damage;
-
-        private IGameFactory _factory;
-
+        
+        public float EffectiveDistance = 0.5f;
+        public float Cleavage = 0.5f;
+        public float Damage;
+        
         private Transform _heroTransform;
         private int _layerMask;
         private float _attackCooldownTimer;
@@ -30,13 +23,14 @@ namespace Enemy
         private bool _isAttacking;
         private Collider[] _hits = new Collider[1];
 
+        public void Construct(Transform heroTransform)
+        {
+            _heroTransform = heroTransform;
+        }
+
         private void Awake()
         {
-            _factory = AllServices.Container.Single<IGameFactory>();
-            
             _layerMask = 1 << LayerMask.NameToLayer("Player");
-            
-            _factory.HeroCreated += OnHeroCreated;
         }
 
         private void Update()
@@ -57,8 +51,8 @@ namespace Enemy
         {
             if (Hit(out Collider hit))
             {
-                PhysicsDebug.DrawDebug(StartPoint(), _cleavage, 1f);
-                hit.transform.GetComponent<IHealth>().TakeDamage(_damage);
+                PhysicsDebug.DrawDebug(StartPoint(), Cleavage, 1f);
+                hit.transform.GetComponent<IHealth>().TakeDamage(Damage);
             }
         }
 
@@ -67,15 +61,15 @@ namespace Enemy
 
         private bool Hit(out Collider hit)
         {
-            int hitsCount = Physics.OverlapSphereNonAlloc(StartPoint(), _cleavage, _hits, _layerMask);
+            int hitsCount = Physics.OverlapSphereNonAlloc(StartPoint(), Cleavage, _hits, _layerMask);
             
             hit = _hits.FirstOrDefault();
             
             return hitsCount > 0;
         }
- 
+
         private Vector3 StartPoint() =>
-            new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) + transform.forward * _effectiveDistance;
+            new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z) + transform.forward * EffectiveDistance;
 
         private void OnAttackEnded()
         {
@@ -97,11 +91,5 @@ namespace Enemy
         }
 
         private bool CanAttack() => _attackIsActive && !_isAttacking && CooldownIsUp();
-        private void OnHeroCreated() => _heroTransform = _factory.HeroGameObject.transform;
-
-        private void OnDestroy()
-        {
-            _factory.HeroCreated -= OnHeroCreated;
-        }
     }
 }

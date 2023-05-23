@@ -14,6 +14,8 @@ namespace Enemy
         [SerializeField]
         private Follow _follow;
         [SerializeField]
+        private Aggro _aggro;
+        [SerializeField]
         private GameObject _deathFx;
         public event Action Happened;
 
@@ -34,7 +36,8 @@ namespace Enemy
         {
             _health.HealthChanged -= HealthChanged;
 
-            _follow.enabled = false;
+            _aggro.enabled = false;
+            _follow.SetEnable(false);
             _animator.PlayDeath();
 
             SpawnDeathFx();
