@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ded3d1989bf44e793d6f8ce92add239, type: 3}
   m_Name: Arena
   m_EditorClassIdentifier: 
-  LevelKey: 
-  Spawners: []
+  LevelKey: Main
+  EnemySpawners:
+  - Id: Main_fb8f6bad-3a4d-4607-a5b4-de975919b260
+    MonsterTypeId: 0
+    Position: {x: 6.31, y: -1.0605373, z: -13.74}
+  - Id: Main_d542d47d-07c3-4948-bf90-d4dfaaaa0aa4
+    MonsterTypeId: 10
+    Position: {x: -5.4, y: -1.0605373, z: -12.58}
+  - Id: Main_7d5a4d88-ac17-4f9d-b188-e7633bea0cbf
+    MonsterTypeId: 0
+    Position: {x: -11.7, y: -1.0605373, z: -22.42}
