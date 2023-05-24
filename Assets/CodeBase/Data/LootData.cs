@@ -23,6 +23,12 @@ namespace Data
             Remove(loot.Id);
             Changed?.Invoke();
         }
+        
+        public void Add(int value)
+        {
+            Collected += value;
+            Changed?.Invoke();
+        }
 
         public void AddLoot(Loot loot)
         {

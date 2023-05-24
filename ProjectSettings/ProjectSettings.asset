@@ -881,11 +881,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 
+  cloudProjectId: 5c117692-0081-44a8-a18c-613c148ce7ce
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Architectural
+  organizationId: unity_glhsesqfbzfoaa
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

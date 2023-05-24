@@ -1,6 +1,7 @@
 ﻿using System;
 using UI.Services.Windows;
 using UI.Windows;
+using UI.Windows.Shop;
 
 namespace StaticData.Windows
 {
