@@ -17,7 +17,7 @@ namespace Enemy
         private Aggro _aggro;
         [SerializeField]
         private GameObject _deathFx;
-        public event Action Happened;
+        public event Action Died;
 
         private void Start()
         {
@@ -43,7 +43,7 @@ namespace Enemy
             SpawnDeathFx();
             StartCoroutine(DestroyTimer());
 
-            Happened?.Invoke();
+            Died?.Invoke();
         }
 
         private void SpawnDeathFx() =>

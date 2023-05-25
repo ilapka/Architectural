@@ -44,8 +44,8 @@ namespace Infrastructure.States
             RegisterStaticData();
             RegisterAdsService();
 
-            _services.RegisterSingle<IAssets>(new AssetProvider());
             _services.RegisterSingle<IGameStateMachine>(_stateMachine);
+            RegisterAssetProvider();
             _services.RegisterSingle(InputService());
             _services.RegisterSingle<IRandomService>(new UnityRandomService());
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
@@ -70,6 +70,13 @@ namespace Infrastructure.States
             _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
         }
 
+        private void RegisterStaticData()
+        {
+            IStaticDataService staticData = new StaticDataService();
+            staticData.LoadMonsters();
+            _services.RegisterSingle(staticData);
+        }
+
         private void RegisterAdsService()
         {
             IAdsService adsService = new AdsService();
@@ -77,11 +84,11 @@ namespace Infrastructure.States
             _services.RegisterSingle(adsService);
         }
 
-        private void RegisterStaticData()
+        private void RegisterAssetProvider()
         {
-            IStaticDataService staticData = new StaticDataService();
-            staticData.LoadMonsters();
-            _services.RegisterSingle(staticData);
+            IAssets assetProvider = new AssetProvider();
+            assetProvider.Initialize();
+            _services.RegisterSingle(assetProvider);
         }
 
         public void Exit()

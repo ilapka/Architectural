@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System.Threading.Tasks;
+using Data;
 using Infrastructure.Factory;
 using Infrastructure.Services;
 using Logic;
@@ -29,12 +30,12 @@ namespace Enemy
         
         private void Start()
         {
-            EnemyDeath.Happened += SpawnLoot;
+            EnemyDeath.Died += SpawnLoot;
         }
 
-        private void SpawnLoot()
+        private async void SpawnLoot()
         {
-            LootPiece loot = _factory.CreateLoot();
+            LootPiece loot = await _factory.CreateLoot();
 
             var lootItem = GenerateLoot();
             
@@ -64,7 +65,7 @@ namespace Enemy
         private void OnDestroy()
         {
             if (EnemyDeath != null)
-                EnemyDeath.Happened -= SpawnLoot;
+                EnemyDeath.Died -= SpawnLoot;
         }
     }
 }   

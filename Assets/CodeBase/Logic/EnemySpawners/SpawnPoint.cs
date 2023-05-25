@@ -34,18 +34,18 @@ namespace Logic.EnemySpawners
             }
         }
 
-        private void Spawn()
+        private async void Spawn()
         {
-            GameObject monster = _factory.CreateMonster(MonsterTypeId, transform);
+            GameObject monster = await _factory.CreateMonster(MonsterTypeId, transform);
             _enemyDeath = monster.GetComponent<EnemyDeath>();
-            _enemyDeath.Happened += Slay;
+            _enemyDeath.Died += Slay;
         }
 
         private void Slay()
         {
             if (_enemyDeath != null)
             {
-                _enemyDeath.Happened -= Slay;
+                _enemyDeath.Died -= Slay;
             }
             
             _isSlain = true;

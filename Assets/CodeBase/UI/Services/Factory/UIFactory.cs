@@ -1,4 +1,5 @@
-﻿using Infrastructure.AssetManagement;
+﻿using System.Threading.Tasks;
+using Infrastructure.AssetManagement;
 using Infrastructure.Services;
 using Infrastructure.Services.Ads;
 using Infrastructure.Services.PersistentProgress;
@@ -11,14 +12,14 @@ namespace UI.Services.Factory
 {
     public class UIFactory : IUIFactory
     {
-        private const string UIRootPath = "UI/UiRoot";
+        private const string UIRootPath = "UiRoot";
         
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
         private readonly IPersistentProgressService _progressService;
+        private readonly IAdsService _adsService;
         
         private Transform _uiRoot;
-        private IAdsService _adsService;
 
         public UIFactory(
             IAssets assets,
@@ -39,7 +40,10 @@ namespace UI.Services.Factory
             window.Construct(_adsService, _progressService);
         }
 
-        public void CreateUIRoot() =>
-            _uiRoot = _assets.Instantiate(UIRootPath).transform;
+        public async Task CreateUIRoot()
+        {
+            GameObject instantiate = await _assets.Instantiate(UIRootPath);
+            _uiRoot = instantiate.transform;
+        }
     }
 }
