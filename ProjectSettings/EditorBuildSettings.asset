@@ -11,8 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: c850ee8c3b14cc8459e7e186857cf567
+  - enabled: 1
+    path: Assets/Scenes/Dungeon.unity
+    guid: 62e707675275d3b439e7275c25fbb23a
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f8236dccf4f39c540be5a44e017e687e,
       type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 209ce18e0de6252478aa4f24be4c9398, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 3cbc2592ad09c3f458dcf04d79687b6d,
+      type: 2}

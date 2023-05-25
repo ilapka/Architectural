@@ -45,10 +45,11 @@ namespace Infrastructure.States
             RegisterAdsService();
 
             _services.RegisterSingle<IAssets>(new AssetProvider());
+            _services.RegisterSingle<IGameStateMachine>(_stateMachine);
             _services.RegisterSingle(InputService());
             _services.RegisterSingle<IRandomService>(new UnityRandomService());
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
-
+    
             _services.RegisterSingle<IUIFactory>(new UIFactory(
                 _services.Single<IAssets>(),
                 _services.Single<IStaticDataService>(), 

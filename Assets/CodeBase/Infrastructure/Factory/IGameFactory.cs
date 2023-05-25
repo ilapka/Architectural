@@ -11,7 +11,7 @@ namespace Infrastructure.Factory
     {
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
-        GameObject CreateHero(GameObject at);
+        GameObject CreateHero(Vector3 at);
         GameObject CreateHud();
         GameObject CreateMonster(MonsterTypeId typeId, Transform parent);
         void CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId);
