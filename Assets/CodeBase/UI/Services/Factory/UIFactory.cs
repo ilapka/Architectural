@@ -4,6 +4,7 @@ using Infrastructure.Services;
 using Infrastructure.Services.Ads;
 using Infrastructure.Services.PersistentProgress;
 using StaticData.Windows;
+using UI.Elements;
 using UI.Services.Windows;
 using UI.Windows.Shop;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace UI.Services.Factory
 {
     public class UIFactory : IUIFactory
     {
-        private const string UIRootPath = "UiRoot";
+        private const string CurtainPath = "Hud/Curtain";
         
         private readonly IAssets _assets;
         private readonly IStaticDataService _staticData;
@@ -42,8 +43,14 @@ namespace UI.Services.Factory
 
         public async Task CreateUIRoot()
         {
-            GameObject instantiate = await _assets.Instantiate(UIRootPath);
+            GameObject instantiate = await _assets.Instantiate(AssetsAddress.UIRoot);
             _uiRoot = instantiate.transform;
+        }
+
+        public LoadingCurtain CreateCurtainNonAsync()
+        {
+            LoadingCurtain loadingCurtain = _assets.InstantiateNonAsync<LoadingCurtain>(CurtainPath);
+            return loadingCurtain;
         }
     }
 }

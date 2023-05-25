@@ -8,6 +8,7 @@ using Infrastructure.Services.PersistentProgress;
 using StaticData;
 using UI.Elements;
 using UI.Services.Factory;
+using UI.Services.Windows;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,28 +18,29 @@ namespace Infrastructure.States
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
-        private readonly LoadingCurtain _curtain;
         private readonly IGameFactory _gameFactory;
         private readonly IPersistentProgressService _progressService;
         private readonly IStaticDataService _staticData;
+        private readonly IWindowService _windowService;
         private readonly IUIFactory _uiFactory;
 
-        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain curtain,
-            IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticData,
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader,
+            IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticData, IWindowService windowService,
             IUIFactory uiFactory)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
-            _curtain = curtain;
             _gameFactory = gameFactory;
             _progressService = progressService;
             _staticData = staticData;
+            _windowService = windowService;
             _uiFactory = uiFactory;
         }
 
         public void Enter(string sceneName)
         {
-            _curtain.Show();
+            _windowService.FadeIn();
+            
             _gameFactory.Cleanup();
             _gameFactory.WarmUp();
             _sceneLoader.Load(sceneName, OnLoaded);
@@ -46,7 +48,7 @@ namespace Infrastructure.States
 
         public void Exit()
         {
-            _curtain.Hide();
+            _windowService.FadeOut();
         }
 
         private async void OnLoaded()

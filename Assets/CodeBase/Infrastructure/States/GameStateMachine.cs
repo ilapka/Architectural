@@ -4,9 +4,8 @@ using Infrastructure.Factory;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
-using UI;
-using UI.Elements;
 using UI.Services.Factory;
+using UI.Services.Windows;
 
 namespace Infrastructure.States
 {
@@ -15,13 +14,13 @@ namespace Infrastructure.States
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
 
-        public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain curtain, AllServices services)
+        public GameStateMachine(SceneLoader sceneLoader, AllServices services)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, curtain,services.Single<IGameFactory>(), 
-                    services.Single<IPersistentProgressService>(),services.Single<IStaticDataService>(), services.Single<IUIFactory>()),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader,services.Single<IGameFactory>(), 
+                    services.Single<IPersistentProgressService>(),services.Single<IStaticDataService>(), services.Single<IWindowService>(),services.Single<IUIFactory>()),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
                 [typeof(GameLoopState)] = new GameLoopState(this),
             };

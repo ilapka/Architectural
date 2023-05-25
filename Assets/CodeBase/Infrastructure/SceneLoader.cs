@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 namespace Infrastructure
@@ -29,9 +32,10 @@ namespace Infrastructure
                 yield break;
             }
 
-            AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
+            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(nextScene);
+            //AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
 
-            while (!waitNextScene.isDone)
+            while (!handle.IsDone)
             {
                 yield return null;
             }

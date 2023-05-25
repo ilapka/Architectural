@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using Object = UnityEngine.Object;
 
 namespace Infrastructure.AssetManagement
 {
@@ -12,11 +11,13 @@ namespace Infrastructure.AssetManagement
         private readonly Dictionary<string, AsyncOperationHandle> _completedCache = new();
         private readonly Dictionary<string, List<AsyncOperationHandle>> _handles = new();
 
+        private readonly Dictionary<string, Object> _resourcesPrefabCache = new();
+
         public void Initialize()
         {
             Addressables.InitializeAsync();
         }
-        
+
         public async Task<T> Load<T>(AssetReference assetReference) where T : class
         {
             if (_completedCache.TryGetValue(assetReference.AssetGUID, out var completedHandle))
@@ -49,6 +50,24 @@ namespace Infrastructure.AssetManagement
         public Task<GameObject> Instantiate(string address, Vector3 at)
         {
             return Addressables.InstantiateAsync(address, at, Quaternion.identity).Task;
+        }
+
+        public T InstantiateNonAsync<T>(string path) where T : Object
+        {
+            T prefab = LoadNonAsync<T>(path);
+            T reference = Object.Instantiate(prefab);
+            
+            return reference;
+        }
+
+        private T LoadNonAsync<T>(string path) where T : Object
+        {
+            if (!_resourcesPrefabCache.ContainsKey(path))
+            {
+                _resourcesPrefabCache[path] = Resources.Load<T>(path);
+            }
+
+            return _resourcesPrefabCache[path] as T;
         }
 
         public void CleanUp()

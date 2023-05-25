@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Infrastructure.Services;
+using UI.Elements;
 
 namespace UI.Services.Factory
 {
@@ -7,5 +8,6 @@ namespace UI.Services.Factory
     {
         void CreateShop();
         Task CreateUIRoot();
+        LoadingCurtain CreateCurtainNonAsync();
     }
 }
