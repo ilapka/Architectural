@@ -51,6 +51,11 @@ namespace Infrastructure.AssetManagement
         {
             return Addressables.InstantiateAsync(address, at, Quaternion.identity).Task;
         }
+        
+        public Task<GameObject> Instantiate(string address, Transform root)
+        {
+            return Addressables.InstantiateAsync(address, root).Task;
+        }
 
         public T InstantiateNonAsync<T>(string path) where T : Object
         {
